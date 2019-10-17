@@ -8,11 +8,12 @@ public class Ventana extends JFrame implements ActionListener {
     JButton botonUno, botonDos, botonTres, botonCuatro, botonCinco, botonSeis;
     JButton botonSiete, botonOcho, botonNueve, botonDiez, botonOnce, botonDoce;
     JButton botonTrece, botonCatorce, botonQuince, botonDieciseis, botonCientifica;
+    JButton botonSin, botonCos,botonTan;
     Container container;
     JLabel mostrar;
     JTextField pantalla;
     boolean operando = false;
-    JPanel panelAbajo, panelArriba;
+    JPanel panelAbajo, panelArriba, panelTop,panelCientifica;
     CardLayout cardLayout;
     int op1, op2;
     int tipoOperacion;
@@ -34,10 +35,18 @@ public class Ventana extends JFrame implements ActionListener {
 
     private void configurarContainer() {
         container.setLayout(new BorderLayout());
-        container.add(configArriba(), BorderLayout.NORTH);
+        container.add(configArriba(), BorderLayout.CENTER);
+        container.add(configTop(), BorderLayout.NORTH);
         container.add(configAbajo(), BorderLayout.SOUTH);
 
 
+
+    }
+    private JPanel configTop(){
+        panelTop.setPreferredSize(new Dimension(100,50));
+        panelTop.setLayout((new BorderLayout()));
+        panelTop.add(botonCientifica);
+        return panelTop;
     }
 
     private JPanel configArriba() {
@@ -45,11 +54,21 @@ public class Ventana extends JFrame implements ActionListener {
 
         panelArriba.setPreferredSize(new Dimension(200, 200));
         panelArriba.setLayout(new BorderLayout());
-        panelArriba.add(pantalla, BorderLayout.CENTER);
+        panelArriba.add(pantalla);
+
 
 
         return panelArriba;
     }
+   /* private void configCientifica(){
+        panelCientifica.setPreferredSize(new Dimension(200,200));
+        panelCientifica.setLayout(new BorderLayout());
+        panelCientifica.add(botonCientifica);
+        panelCientifica.add(botonCos);
+        panelCientifica.add(botonTan);
+        panelCientifica.add(botonSin);
+
+    } */
 
     private JPanel configAbajo() {
         panelAbajo.setPreferredSize(new Dimension(200, 200));
@@ -78,9 +97,9 @@ public class Ventana extends JFrame implements ActionListener {
     private void acciones() {
         Component[] componentes = panelAbajo.getComponents();
         for (Component item : componentes) {
-
             ((JButton) item).addActionListener(this);
         }
+        botonCientifica.addActionListener(this);
     }
 
     private void instancias() {
@@ -148,17 +167,59 @@ public class Ventana extends JFrame implements ActionListener {
         botonDieciseis.setBackground(Color.RED);
         botonDieciseis.setFont(new Font("Arial", Font.BOLD, 35));
 
+        botonCientifica = new JButton("Calculadora Cientifica");
+        botonCientifica.setBackground(Color.LIGHT_GRAY);
+        botonCientifica.setFont(new Font("Arial", Font.BOLD, 25));
+
+        botonSin = new JButton("SIN");
+        botonSin.setBackground(Color.LIGHT_GRAY);
+        botonSin.setFont(new Font("Arial", Font.BOLD, 25));
+
+        botonCos = new JButton("COS");
+        botonCos.setBackground(Color.LIGHT_GRAY);
+        botonCos.setFont(new Font("Arial", Font.BOLD, 25));
+
+        botonTan = new JButton("TAN");
+        botonTan.setBackground(Color.LIGHT_GRAY);
+        botonTan.setFont(new Font("Arial", Font.BOLD, 25));
+
         panelAbajo = new JPanel();
         panelArriba = new JPanel();
+        panelTop = new JPanel();
+
+        panelCientifica = new JPanel();
+        panelCientifica.add(new JLabel((Icon) mostrar));
+
+
 
         pantalla = new JTextField();
         container = this.getContentPane();
+        pantalla.setFont(new Font("Arial", Font.BOLD, 25));
         // mostrar = JLabel();
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    if(e.getSource()==botonCientifica) {
+        System.out.println("asdasd");
+        panelCientifica.setPreferredSize(new Dimension(200,200));
+        panelCientifica.setLayout(new BorderLayout());
+        panelCientifica.setLayout(new GridLayout(2,1));
+        panelCientifica.add(botonCos);
+        panelCientifica.add(botonTan);
+        panelCientifica.add(botonSin);
+            if (panelCientifica.isShowing()) {
+                container.remove(panelCientifica);
+                pack();
+            } else {
+                    container.add(panelCientifica, BorderLayout.WEST);
+                    pack();
+            }
+
+
+
+    }
         if (e.getSource() == botonUno) {
             if (!operando) {
                 pantalla.setText(pantalla.getText() + "1");
@@ -236,6 +297,8 @@ public class Ventana extends JFrame implements ActionListener {
             operando = true;
             op1 = Integer.valueOf(pantalla.getText());
             tipoOperacion = 4;
+        }else if(e.getSource()==botonDieciseis){
+            pantalla.setText("");
 
         } else if (e.getSource() == botonQuince) {
             op2 = Integer.valueOf(pantalla.getText());
